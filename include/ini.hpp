@@ -9,19 +9,12 @@
 
 namespace ini
 {
-    inline namespace detail
-    {
-        constexpr std::uint8_t UTF8_BOM[] = {0xEF, 0xBB, 0xBF};
-    }
-
     class ParseError final: public std::logic_error
     {
     public:
         explicit ParseError(const std::string& str): std::logic_error(str) {}
         explicit ParseError(const char* str): std::logic_error(str) {}
     };
-
-    class Data;
 
     class Section final
     {
