@@ -190,7 +190,7 @@ namespace ini
 
                 for (auto iterator = hasByteOrderMark(begin, end) ? begin + 3 : begin; iterator != end;)
                 {
-                    if (isWhitespace(*iterator) || *iterator == '\n' || *iterator == '\r') // line starts with a whitespace
+                    if (isWhitespace(static_cast<char>(*iterator)) || *iterator == '\n' || *iterator == '\r') // line starts with a whitespace
                         ++iterator; // skip the white space
                     else if (*iterator == '[') // section
                     {
