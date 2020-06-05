@@ -3,6 +3,7 @@
 #ifndef INI_HPP
 #define INI_HPP
 
+#include <algorithm>
 #include <map>
 #include <stdexcept>
 #include <string>
