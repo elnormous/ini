@@ -324,7 +324,7 @@ namespace ini
             static bool hasByteOrderMark(Iterator begin, Iterator end) noexcept
             {
                 for (auto i = std::begin(utf8ByteOrderMark); i != std::end(utf8ByteOrderMark); ++i, ++begin)
-                    if (begin == end || *begin != *i)
+                    if (begin == end || static_cast<std::uint8_t>(*begin) != *i)
                         return false;
                 return true;
             }
