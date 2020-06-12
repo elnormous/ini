@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "ini.hpp"
 
 namespace
@@ -100,6 +101,33 @@ namespace
         if (ini::encode(d) != "a=a\n[foo]\nbar=b\nbaz=ā\n")
             throw TestError("Wrong encoded result");
     }
+
+    enum class byte: unsigned char {};
+
+    void testByte()
+    {
+        std::vector<byte> data = {
+            static_cast<byte>('a'),
+            static_cast<byte>('='),
+            static_cast<byte>('b')
+        };
+
+        ini::Data d = ini::parse(data);
+        if (d.getSize() != 1)
+            throw TestError("Expected one section");
+
+        if (!d.hasSection(""))
+            throw TestError("Expected the main section");
+
+        if (d[""].getSize() != 1)
+            throw TestError("Expected one value");
+
+        if (!d[""].hasValue("a"))
+            throw TestError("Wrong key");
+
+        if (d[""]["a"] != "b")
+            throw TestError("Wrong value");
+    }
 }
 
 int main()
@@ -109,6 +137,7 @@ int main()
     testRunner.run(testSection);
     testRunner.run(testUnicode);
     testRunner.run(testEncoding);
+    testRunner.run(testByte);
 
     if (testRunner.getResult())
         std::cout << "Success\n";

@@ -191,9 +191,11 @@ namespace ini
 
                 for (auto iterator = hasByteOrderMark(begin, end) ? begin + 3 : begin; iterator != end;)
                 {
-                    if (isWhitespace(static_cast<char>(*iterator)) || *iterator == '\n' || *iterator == '\r') // line starts with a whitespace
+                    if (isWhitespace(static_cast<char>(*iterator)) ||
+                        static_cast<char>(*iterator) == '\n' ||
+                        static_cast<char>(*iterator) == '\r') // line starts with a whitespace
                         ++iterator; // skip the white space
-                    else if (*iterator == '[') // section
+                    else if (static_cast<char>(*iterator) == '[') // section
                     {
                         ++iterator; // skip the left bracket
 
@@ -201,7 +203,9 @@ namespace ini
 
                         for (;;)
                         {
-                            if (iterator == end || *iterator == '\n' || *iterator == '\r')
+                            if (iterator == end ||
+                                static_cast<char>(*iterator) == '\n' ||
+                                static_cast<char>(*iterator) == '\r')
                             {
                                 if (!parsedSection)
                                     throw ParseError("Unexpected end of section");
@@ -209,7 +213,7 @@ namespace ini
                                 ++iterator; // skip the newline
                                 break;
                             }
-                            else if (*iterator == ';')
+                            else if (static_cast<char>(*iterator) == ';')
                             {
                                 ++iterator; // skip the semicolon
 
@@ -218,7 +222,8 @@ namespace ini
 
                                 while (iterator != end)
                                 {
-                                    if (*iterator == '\n' || *iterator == '\r')
+                                    if (static_cast<char>(*iterator) == '\n' ||
+                                        static_cast<char>(*iterator) == '\r')
                                     {
                                         ++iterator; // skip the newline
                                         break;
@@ -228,9 +233,10 @@ namespace ini
                                 }
                                 break;
                             }
-                            else if (*iterator == ']')
+                            else if (static_cast<char>(*iterator) == ']')
                                 parsedSection = true;
-                            else if (*iterator != ' ' && *iterator != '\t')
+                            else if (static_cast<char>(*iterator) != ' ' &&
+                                     static_cast<char>(*iterator) != '\t')
                             {
                                 if (parsedSection)
                                     throw ParseError("Unexpected character after section");
@@ -249,11 +255,12 @@ namespace ini
 
                         result[section] = Section{};
                     }
-                    else if (*iterator == ';') // comment
+                    else if (static_cast<char>(*iterator) == ';') // comment
                     {
                         while (++iterator != end)
                         {
-                            if (*iterator == '\r' || *iterator == '\n')
+                            if (static_cast<char>(*iterator) == '\r' ||
+                                static_cast<char>(*iterator) == '\n')
                             {
                                 ++iterator; // skip the newline
                                 break;
@@ -268,25 +275,27 @@ namespace ini
 
                         while (iterator != end)
                         {
-                            if (*iterator == '\r' || *iterator == '\n')
+                            if (static_cast<char>(*iterator) == '\r' ||
+                                static_cast<char>(*iterator) == '\n')
                             {
                                 ++iterator; // skip the newline
                                 break;
                             }
-                            else if (*iterator == '=')
+                            else if (static_cast<char>(*iterator) == '=')
                             {
                                 if (!parsedKey)
                                     parsedKey = true;
                                 else
                                     throw ParseError("Unexpected character");
                             }
-                            else if (*iterator == ';')
+                            else if (static_cast<char>(*iterator) == ';')
                             {
                                 ++iterator; // skip the semicolon
 
                                 while (iterator != end)
                                 {
-                                    if (*iterator == '\r' || *iterator == '\n')
+                                    if (static_cast<char>(*iterator) == '\r' ||
+                                        static_cast<char>(*iterator) == '\n')
                                     {
                                         ++iterator; // skip the newline
                                         break;
