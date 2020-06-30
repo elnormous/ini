@@ -15,15 +15,16 @@ namespace
     {
     public:
         template <class T, class ...Args>
-        void run(T test, Args ...args) noexcept
+        void run(const std::string& name, T test, Args ...args) noexcept
         {
             try
             {
                 test(args...);
+                std::cerr << name << " succeeded\n";
             }
             catch (const TestError& e)
             {
-                std::cerr << e.what() << '\n';
+                std::cerr << name << " failed: " << e.what() << '\n';
                 result = false;
             }
         }
@@ -133,11 +134,11 @@ namespace
 int main()
 {
     TestRunner testRunner;
-    testRunner.run(testMainSection);
-    testRunner.run(testSection);
-    testRunner.run(testUnicode);
-    testRunner.run(testEncoding);
-    testRunner.run(testByte);
+    testRunner.run("testMainSection", testMainSection);
+    testRunner.run("testSection", testSection);
+    testRunner.run("testUnicode", testUnicode);
+    testRunner.run("testEncoding", testEncoding);
+    testRunner.run("testByte", testByte);
 
     if (testRunner.getResult())
         std::cout << "Success\n";
