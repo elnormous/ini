@@ -56,7 +56,7 @@ namespace ini
 
         bool hasValue(const std::string& key) const
         {
-            auto valueIterator = values.find(key);
+            const auto valueIterator = values.find(key);
             return valueIterator != values.end();
         }
 
@@ -67,7 +67,7 @@ namespace ini
 
         std::string operator[](const std::string& key) const
         {
-            auto valueIterator = values.find(key);
+            const auto valueIterator = values.find(key);
             if (valueIterator != values.end())
                 return valueIterator->second;
 
@@ -76,7 +76,7 @@ namespace ini
 
         const std::string& getValue(const std::string& key, const std::string& defaultValue = {}) const
         {
-            auto valueIterator = values.find(key);
+            const auto valueIterator = values.find(key);
 
             if (valueIterator != values.end())
                 return valueIterator->second;
@@ -91,7 +91,7 @@ namespace ini
 
         void deleteValue(const std::string& key)
         {
-            auto valueIterator = values.find(key);
+            const auto valueIterator = values.find(key);
 
             if (valueIterator != values.end())
                 values.erase(valueIterator);
@@ -138,7 +138,7 @@ namespace ini
 
         bool hasSection(const std::string& name) const
         {
-            auto sectionIterator = sections.find(name);
+            const auto sectionIterator = sections.find(name);
             return sectionIterator != sections.end();
         }
 
@@ -149,7 +149,7 @@ namespace ini
 
         Section operator[](const std::string& name) const
         {
-            auto sectionIterator = sections.find(name);
+            const auto sectionIterator = sections.find(name);
             if (sectionIterator != sections.end())
                 return sectionIterator->second;
 
@@ -158,7 +158,7 @@ namespace ini
 
         void eraseSection(const std::string& name)
         {
-            auto sectionIterator = sections.find(name);
+            const auto sectionIterator = sections.find(name);
             if (sectionIterator != sections.end())
                 sections.erase(sectionIterator);
         }
