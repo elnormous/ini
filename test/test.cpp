@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 #include "catch2/catch.hpp"
 #include "ini.hpp"
