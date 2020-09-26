@@ -5,7 +5,7 @@
 
 TEST_CASE("MainSection", "[main_section]")
 {
-    ini::Data d = ini::parse("a=b");
+    const ini::Data d = ini::parse("a=b");
     REQUIRE(d.getSize() == 1);
     REQUIRE(d.hasSection(""));
     REQUIRE(d[""].getSize() == 1);
@@ -15,7 +15,7 @@ TEST_CASE("MainSection", "[main_section]")
 
 TEST_CASE("Section", "[section]")
 {
-    ini::Data d = ini::parse("[s]\na=b");
+    const ini::Data d = ini::parse("[s]\na=b");
     REQUIRE(d.getSize() == 1);
     REQUIRE(d.hasSection("s"));
     REQUIRE(d["s"].getSize() == 1);
@@ -25,7 +25,7 @@ TEST_CASE("Section", "[section]")
 
 TEST_CASE("Unicode", "[unicode]")
 {
-    ini::Data d = ini::parse("[š]\nā=ē");
+    const ini::Data d = ini::parse("[š]\nā=ē");
     REQUIRE(d.getSize() == 1);
     REQUIRE(d.hasSection("š"));
     REQUIRE(d["š"].getSize() == 1);
@@ -45,13 +45,13 @@ TEST_CASE("Encoding", "[encoding]")
 
 TEST_CASE("Byte", "[byte]")
 {
-    std::vector<std::byte> data = {
+    const std::vector<std::byte> data = {
         static_cast<std::byte>('a'),
         static_cast<std::byte>('='),
         static_cast<std::byte>('b')
     };
 
-    ini::Data d = ini::parse(data);
+    const ini::Data d = ini::parse(data);
     REQUIRE(d.getSize() == 1);
     REQUIRE(d.hasSection(""));
     REQUIRE(d[""].getSize() == 1);
