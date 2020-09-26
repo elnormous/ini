@@ -1,4 +1,3 @@
-#include <chrono>
 #include <iostream>
 #include <vector>
 #include "catch2/catch.hpp"
