@@ -3,6 +3,12 @@
 #include "catch2/catch.hpp"
 #include "ini.hpp"
 
+TEST_CASE("Empty", "[empty]")
+{
+    const ini::Data d = ini::parse("");
+    REQUIRE(d.getSize() == 0);
+}
+
 TEST_CASE("MainSection", "[main_section]")
 {
     const ini::Data d = ini::parse("a=b");
