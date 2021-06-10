@@ -5,9 +5,11 @@
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <map>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 namespace ini
 {
@@ -20,7 +22,7 @@ namespace ini
     class Section final
     {
     public:
-        using Values = std::map<std::string, std::string>;
+        using Values = std::map<std::string, std::string, std::less<>>;
 
         Section() = default;
 
@@ -29,22 +31,22 @@ namespace ini
         {
         }
 
-        Values::iterator begin() noexcept
+        auto begin() noexcept
         {
             return values.begin();
         }
 
-        Values::iterator end() noexcept
+        auto end() noexcept
         {
             return values.end();
         }
 
-        Values::const_iterator begin() const noexcept
+        auto begin() const noexcept
         {
             return values.begin();
         }
 
-        Values::const_iterator end() const noexcept
+        auto end() const noexcept
         {
             return values.end();
         }
@@ -54,17 +56,24 @@ namespace ini
 
         const Values& getValues() const noexcept { return values; }
 
-        bool hasValue(const std::string& key) const
+        bool hasValue(const std::string_view key) const
         {
             return values.find(key) != values.end();
         }
 
-        std::string& operator[](const std::string& key)
+        std::string& operator[](const std::string_view key)
         {
-            return values[key];
+            if (const auto valueIterator = values.find(key); valueIterator != values.end())
+                return valueIterator->second;
+            else
+            {
+                const auto& [newIterator, success] = values.insert({std::string{key}, std::string{}});
+                (void)success;
+                return newIterator->second;
+            }
         }
 
-        std::string operator[](const std::string& key) const
+        std::string operator[](const std::string_view key) const
         {
             if (const auto valueIterator = values.find(key); valueIterator != values.end())
                 return valueIterator->second;
@@ -72,7 +81,7 @@ namespace ini
             return std::string();
         }
 
-        const std::string& getValue(const std::string& key, const std::string& defaultValue = {}) const
+        const std::string& getValue(const std::string_view key, const std::string& defaultValue = {}) const
         {
             if (const auto valueIterator = values.find(key); valueIterator != values.end())
                 return valueIterator->second;
@@ -80,12 +89,12 @@ namespace ini
             return defaultValue;
         }
 
-        void setValue(const std::string& key, const std::string& value)
+        void setValue(const std::string_view key, const std::string& value)
         {
-            values[key] = value;
+            values.insert({std::string{key}, value});
         }
 
-        void deleteValue(const std::string& key)
+        void deleteValue(const std::string_view key)
         {
             if (const auto valueIterator = values.find(key); valueIterator != values.end())
                 values.erase(valueIterator);
@@ -104,52 +113,58 @@ namespace ini
     class Data final
     {
     public:
-        using Sections = std::map<std::string, Section>;
+        using Sections = std::map<std::string, Section, std::less<>>;
 
         Data() = default;
 
         const Sections& getSections() const noexcept { return sections; }
 
-        Sections::iterator begin() noexcept
+        auto begin() noexcept
         {
             return sections.begin();
         }
 
-        Sections::iterator end() noexcept
+        auto end() noexcept
         {
             return sections.end();
         }
 
-        Sections::const_iterator begin() const noexcept
+        auto begin() const noexcept
         {
             return sections.begin();
         }
 
-        Sections::const_iterator end() const noexcept
+        auto end() const noexcept
         {
             return sections.end();
         }
 
-        bool hasSection(const std::string& name) const
+        bool hasSection(const std::string_view name) const
         {
-            const auto sectionIterator = sections.find(name);
-            return sectionIterator != sections.end();
+            return sections.find(name) != sections.end();
         }
 
-        Section& operator[](const std::string& name)
+        Section& operator[](const std::string_view name)
         {
-            return sections[name];
+            if (const auto sectionIterator = sections.find(name); sectionIterator != sections.end())
+                return sectionIterator->second;
+            else
+            {
+                const auto& [newIterator, success] = sections.insert({std::string{name}, Section{}});
+                (void)success;
+                return newIterator->second;
+            }
         }
 
-        Section operator[](const std::string& name) const
+        Section operator[](const std::string_view name) const
         {
             if (const auto sectionIterator = sections.find(name); sectionIterator != sections.end())
                 return sectionIterator->second;
 
-            return Section();
+            return Section{};
         }
 
-        void eraseSection(const std::string& name)
+        void eraseSection(const std::string_view name)
         {
             if (const auto sectionIterator = sections.find(name); sectionIterator != sections.end())
                 sections.erase(sectionIterator);
