@@ -87,7 +87,7 @@ TEST_CASE("Range-based for loop of sections")
         data["0"] = ini::Section{};
         data["1"] = ini::Section{};
 
-        const auto constData = data;
+        const auto& constData = data;
 
         int counter = 0;
 
@@ -120,7 +120,7 @@ TEST_CASE("Range-based for loop of values")
         section["0"] = std::string{};
         section["1"] = std::string{};
 
-        const auto constSection = section;
+        const auto& constSection = section;
 
         int counter = 0;
 
@@ -129,4 +129,20 @@ TEST_CASE("Range-based for loop of values")
 
         REQUIRE(counter == 2);
     }
+}
+
+TEST_CASE("Invalid section")
+{
+    ini::Data data;
+    const auto& constData = data;
+
+    REQUIRE_THROWS_AS(constData["a"], ini::RangeError);
+}
+
+TEST_CASE("Invalid value")
+{
+    ini::Section section;
+    const auto& constSection = section;
+
+    REQUIRE_THROWS_AS(constSection["a"], ini::RangeError);
 }

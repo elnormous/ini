@@ -19,6 +19,12 @@ namespace ini
         using std::logic_error::logic_error;
     };
 
+    class RangeError final: public std::range_error
+    {
+    public:
+        using std::range_error::range_error;
+    };
+
     using Values = std::map<std::string, std::string, std::less<>>;
 
     class Section final
@@ -73,12 +79,12 @@ namespace ini
             }
         }
 
-        std::string operator[](const std::string_view key) const
+        const std::string& operator[](const std::string_view key) const
         {
             if (const auto valueIterator = values.find(key); valueIterator != values.end())
                 return valueIterator->second;
-
-            return std::string();
+            else
+                throw RangeError{"Value does not exist"};
         }
 
         const std::string& getValue(const std::string_view key, const std::string& defaultValue = {}) const
@@ -156,12 +162,12 @@ namespace ini
             }
         }
 
-        Section operator[](const std::string_view name) const
+        const Section& operator[](const std::string_view name) const
         {
             if (const auto sectionIterator = sections.find(name); sectionIterator != sections.end())
                 return sectionIterator->second;
-
-            return Section{};
+            else
+                throw RangeError{"Section does not exist"};
         }
 
         void eraseSection(const std::string_view name)
