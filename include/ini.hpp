@@ -19,11 +19,11 @@ namespace ini
         using std::logic_error::logic_error;
     };
 
+    using Values = std::map<std::string, std::string, std::less<>>;
+
     class Section final
     {
     public:
-        using Values = std::map<std::string, std::string, std::less<>>;
-
         Section() = default;
 
         explicit Section(const std::string& initName):

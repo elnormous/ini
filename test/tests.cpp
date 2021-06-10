@@ -64,3 +64,69 @@ TEST_CASE("Byte", "[byte]")
     REQUIRE(d[""].hasValue("a"));
     REQUIRE(d[""]["a"] == "b");
 }
+
+TEST_CASE("Range-based for loop of sections")
+{
+    SECTION("Mutable")
+    {
+        ini::Data data;
+        data["0"] = ini::Section{};
+        data["1"] = ini::Section{};
+
+        int counter = 0;
+
+        for (auto& i : data)
+            REQUIRE(i.first == std::to_string(counter++));
+
+        REQUIRE(counter == 2);
+    }
+
+    SECTION("Const")
+    {
+        ini::Data data;
+        data["0"] = ini::Section{};
+        data["1"] = ini::Section{};
+
+        const auto constData = data;
+
+        int counter = 0;
+
+        for (auto& i : constData)
+            REQUIRE(i.first == std::to_string(counter++));
+
+        REQUIRE(counter == 2);
+    }
+}
+
+TEST_CASE("Range-based for loop of values")
+{
+    SECTION("Mutable")
+    {
+        ini::Section section;
+        section["0"] = std::string{};
+        section["1"] = std::string{};
+
+        int counter = 0;
+
+        for (auto& i : section)
+            REQUIRE(i.first == std::to_string(counter++));
+
+        REQUIRE(counter == 2);
+    }
+
+    SECTION("Const")
+    {
+        ini::Section section;
+        section["0"] = std::string{};
+        section["1"] = std::string{};
+
+        const auto constSection = section;
+
+        int counter = 0;
+
+        for (auto& i : constSection)
+            REQUIRE(i.first == std::to_string(counter++));
+
+        REQUIRE(counter == 2);
+    }
+}
