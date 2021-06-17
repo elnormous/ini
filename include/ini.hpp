@@ -73,7 +73,7 @@ namespace ini
                 return valueIterator->second;
             else
             {
-                const auto& [newIterator, success] = values.insert({std::string{key}, std::string{}});
+                const auto& [newIterator, success] = values.insert(std::make_pair(key, std::string{}));
                 (void)success;
                 return newIterator->second;
             }
@@ -97,7 +97,7 @@ namespace ini
 
         void setValue(const std::string_view key, const std::string& value)
         {
-            values.insert({std::string{key}, value});
+            values.insert(std::make_pair(key, value));
         }
 
         void deleteValue(const std::string_view key)
@@ -156,7 +156,7 @@ namespace ini
                 return sectionIterator->second;
             else
             {
-                const auto& [newIterator, success] = sections.insert({std::string{name}, Section{}});
+                const auto& [newIterator, success] = sections.insert(std::make_pair(name, Section{}));
                 (void)success;
                 return newIterator->second;
             }
