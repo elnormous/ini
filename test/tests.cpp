@@ -39,14 +39,28 @@ TEST_CASE("Unicode", "[unicode]")
     REQUIRE(d["š"]["ā"] == "ē");
 }
 
-TEST_CASE("Encoding", "[encoding]")
+TEST_CASE("Value encoding", "[encoding]")
 {
     ini::Data d;
     d[""]["a"] = "a";
-    d["foo"]["bar"] = "b";
-    d["foo"]["baz"] = "ā";
 
-    REQUIRE(ini::encode(d) == "a=a\n[foo]\nbar=b\nbaz=ā\n");
+    REQUIRE(ini::encode(d) == "a=a\n");
+}
+
+TEST_CASE("UTF-8 encoding", "[encoding]")
+{
+    ini::Data d;
+    d[""]["a"] = "ā";
+
+    REQUIRE(ini::encode(d) == "a=ā\n");
+}
+
+TEST_CASE("Section encoding", "[encoding]")
+{
+    ini::Data d;
+    d["foo"]["a"] = "a";
+
+    REQUIRE(ini::encode(d) == "[foo]\na=a\n");
 }
 
 TEST_CASE("Byte", "[byte]")
