@@ -3,13 +3,13 @@
 #include "catch2/catch.hpp"
 #include "ini.hpp"
 
-TEST_CASE("Empty", "[empty]")
+TEST_CASE("Empty", "[decoding]")
 {
     const ini::Data d = ini::parse("");
     REQUIRE(d.getSize() == 0);
 }
 
-TEST_CASE("MainSection", "[main_section]")
+TEST_CASE("MainSection", "[decoding]")
 {
     const ini::Data d = ini::parse("a=b");
     REQUIRE(d.getSize() == 1);
@@ -19,7 +19,7 @@ TEST_CASE("MainSection", "[main_section]")
     REQUIRE(d[""]["a"] == "b");
 }
 
-TEST_CASE("Section", "[section]")
+TEST_CASE("Section", "[decoding]")
 {
     const ini::Data d = ini::parse("[s]\na=b");
     REQUIRE(d.getSize() == 1);
@@ -29,7 +29,7 @@ TEST_CASE("Section", "[section]")
     REQUIRE(d["s"]["a"] == "b");
 }
 
-TEST_CASE("Unicode", "[unicode]")
+TEST_CASE("Unicode", "[decoding]")
 {
     const ini::Data d = ini::parse("[š]\nā=ē");
     REQUIRE(d.getSize() == 1);
@@ -37,6 +37,12 @@ TEST_CASE("Unicode", "[unicode]")
     REQUIRE(d["š"].getSize() == 1);
     REQUIRE(d["š"].hasValue("ā"));
     REQUIRE(d["š"]["ā"] == "ē");
+}
+
+TEST_CASE("Comments", "[decoding]")
+{
+    const ini::Data d = ini::parse("[s];aa\na=b; bb");
+    REQUIRE(d.getSize() == 1);
 }
 
 TEST_CASE("Value encoding", "[encoding]")
