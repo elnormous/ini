@@ -43,6 +43,10 @@ TEST_CASE("Comments", "[decoding]")
 {
     const ini::Data d = ini::parse("[s];aa\na=b; bb");
     REQUIRE(d.getSize() == 1);
+    REQUIRE(d.hasSection("s"));
+    REQUIRE(d["s"].getSize() == 1);
+    REQUIRE(d["s"].hasValue("a"));
+    REQUIRE(d["s"]["a"] == "b");
 }
 
 TEST_CASE("Value encoding", "[encoding]")
