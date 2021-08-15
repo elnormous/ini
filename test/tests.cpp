@@ -41,7 +41,7 @@ TEST_CASE("Unicode", "[decoding]")
 
 TEST_CASE("Comments", "[decoding]")
 {
-    const ini::Data d = ini::parse("[s];aa\na=b; bb");
+    const ini::Data d = ini::parse("  ;test\n[s];aa\na=b; bb");
     REQUIRE(d.getSize() == 1);
     REQUIRE(d.hasSection("s"));
     REQUIRE(d["s"].getSize() == 1);
