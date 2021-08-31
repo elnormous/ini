@@ -386,7 +386,8 @@ namespace ini
     template <class T>
     Data parse(const T& data)
     {
-        return parse(std::begin(data), std::end(data));
+        using std::begin, std::end; // add std::begin and std::end to lookup
+        return parse(begin(data), end(data));
     }
 
     inline std::string encode(const Data& data, bool byteOrderMark = false)
