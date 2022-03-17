@@ -1,5 +1,3 @@
-// Copyright 2015-2020 Elviss Strazdins. All rights reserved.
-
 #ifndef INI_HPP
 #define INI_HPP
 
@@ -386,7 +384,8 @@ namespace ini
     template <class T>
     Data parse(const T& data)
     {
-        return parse(std::begin(data), std::end(data));
+        using std::begin, std::end; // add std::begin and std::end to lookup
+        return parse(begin(data), end(data));
     }
 
     inline std::string encode(const Data& data, const bool byteOrderMark = false)
