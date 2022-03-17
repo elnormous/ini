@@ -191,7 +191,7 @@ namespace ini
         class Parser final
         {
         public:
-            static Data parse(Iterator begin, Iterator end)
+            static Data parse(const Iterator begin, const Iterator end)
             {
                 Data result;
 
@@ -338,7 +338,7 @@ namespace ini
             }
 
         private:
-            static bool hasByteOrderMark(Iterator begin, Iterator end) noexcept
+            static bool hasByteOrderMark(const Iterator begin, const Iterator end) noexcept
             {
                 for (const auto b : utf8ByteOrderMark)
                     if (begin == end || static_cast<std::uint8_t>(*begin) != b)
@@ -389,7 +389,7 @@ namespace ini
         return parse(std::begin(data), std::end(data));
     }
 
-    inline std::string encode(const Data& data, bool byteOrderMark = false)
+    inline std::string encode(const Data& data, const bool byteOrderMark = false)
     {
         std::string result;
 
