@@ -35,37 +35,37 @@ namespace ini
         {
         }
 
-        auto begin() noexcept
+        [[nodiscard]] auto begin() noexcept
         {
             return values.begin();
         }
 
-        auto end() noexcept
+        [[nodiscard]] auto end() noexcept
         {
             return values.end();
         }
 
-        auto begin() const noexcept
+        [[nodiscard]] auto begin() const noexcept
         {
             return values.begin();
         }
 
-        auto end() const noexcept
+        [[nodiscard]] auto end() const noexcept
         {
             return values.end();
         }
 
-        const std::string& getName() const noexcept { return name; }
+        [[nodiscard]] const std::string& getName() const noexcept { return name; }
         void setName(const std::string& newName) { name = newName; }
 
-        const Values& getValues() const noexcept { return values; }
+        [[nodiscard]] const Values& getValues() const noexcept { return values; }
 
-        bool hasValue(const std::string_view key) const
+        [[nodiscard]] bool hasValue(const std::string_view key) const
         {
             return values.find(key) != values.end();
         }
 
-        std::string& operator[](const std::string_view key)
+        [[nodiscard]] std::string& operator[](const std::string_view key)
         {
             if (const auto iterator = values.find(key); iterator != values.end())
                 return iterator->second;
@@ -77,6 +77,7 @@ namespace ini
             }
         }
 
+        [[nodiscard]]
         const std::string& operator[](const std::string_view key) const
         {
             if (const auto iterator = values.find(key); iterator != values.end())
@@ -85,6 +86,7 @@ namespace ini
                 throw RangeError{"Value does not exist"};
         }
 
+        [[nodiscard]]
         const std::string& getValue(const std::string_view key, const std::string& defaultValue = {}) const
         {
             if (const auto iterator = values.find(key); iterator != values.end())
@@ -99,7 +101,7 @@ namespace ini
                 values.erase(iterator);
         }
 
-        std::size_t getSize() const noexcept
+        [[nodiscard]] std::size_t getSize() const noexcept
         {
             return values.size();
         }
@@ -116,34 +118,34 @@ namespace ini
 
         Data() = default;
 
-        const Sections& getSections() const noexcept { return sections; }
+        [[nodiscard]] const Sections& getSections() const noexcept { return sections; }
 
-        auto begin() noexcept
+        [[nodiscard]] auto begin() noexcept
         {
             return sections.begin();
         }
 
-        auto end() noexcept
+        [[nodiscard]] auto end() noexcept
         {
             return sections.end();
         }
 
-        auto begin() const noexcept
+        [[nodiscard]] auto begin() const noexcept
         {
             return sections.begin();
         }
 
-        auto end() const noexcept
+        [[nodiscard]] auto end() const noexcept
         {
             return sections.end();
         }
 
-        bool hasSection(const std::string_view name) const
+        [[nodiscard]] bool hasSection(const std::string_view name) const
         {
             return sections.find(name) != sections.end();
         }
 
-        Section& operator[](const std::string_view name)
+        [[nodiscard]] Section& operator[](const std::string_view name)
         {
             if (const auto sectionIterator = sections.find(name); sectionIterator != sections.end())
                 return sectionIterator->second;
@@ -155,7 +157,7 @@ namespace ini
             }
         }
 
-        const Section& operator[](const std::string_view name) const
+        [[nodiscard]] const Section& operator[](const std::string_view name) const
         {
             if (const auto sectionIterator = sections.find(name); sectionIterator != sections.end())
                 return sectionIterator->second;
@@ -169,7 +171,7 @@ namespace ini
                 sections.erase(sectionIterator);
         }
 
-        std::size_t getSize() const noexcept
+        [[nodiscard]] std::size_t getSize() const noexcept
         {
             return sections.size();
         }
@@ -184,11 +186,12 @@ namespace ini
     }
 
     template <class Iterator>
-    Data parse(Iterator begin, Iterator end)
+    [[nodiscard]] Data parse(Iterator begin, Iterator end)
     {
         class Parser final
         {
         public:
+            [[nodiscard]]
             static Data parse(const Iterator begin, const Iterator end)
             {
                 Data result;
@@ -336,6 +339,7 @@ namespace ini
             }
 
         private:
+            [[nodiscard]]
             static bool hasByteOrderMark(const Iterator begin, const Iterator end) noexcept
             {
                 auto i = begin;
@@ -345,6 +349,7 @@ namespace ini
                 return true;
             }
 
+            [[nodiscard]]
             static constexpr bool isWhitespace(const char c) noexcept
             {
                 return c == ' ' || c == '\t';
@@ -373,7 +378,7 @@ namespace ini
         return Parser::parse(begin, end);
     }
 
-    inline Data parse(const char* data)
+    [[nodiscard]] inline Data parse(const char* data)
     {
         auto end = data;
         while (*end) ++end;
@@ -381,12 +386,13 @@ namespace ini
     }
 
     template <class T>
-    Data parse(const T& data)
+    [[nodiscard]] Data parse(const T& data)
     {
         using std::begin, std::end; // add std::begin and std::end to lookup
         return parse(begin(data), end(data));
     }
 
+    [[nodiscard]]
     inline std::string encode(const Data& data, const bool byteOrderMark = false)
     {
         std::string result;
