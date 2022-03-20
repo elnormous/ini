@@ -3,6 +3,12 @@
 #include "catch2/catch.hpp"
 #include "ini.hpp"
 
+TEST_CASE("Whitespace", "[parsing]")
+{
+    for (int c = 0; c < 256; ++c)
+        REQUIRE(ini::isWhitespace(static_cast<char>(c)) == (c == ' ' || c == '\t'));
+}
+
 TEST_CASE("Empty", "[decoding]")
 {
     const ini::Data d = ini::parse("");
