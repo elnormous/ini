@@ -31,7 +31,7 @@ namespace ini
 
         template <class Iterator>
         [[nodiscard]]
-        static bool hasByteOrderMark(const Iterator begin, const Iterator end) noexcept
+        bool hasByteOrderMark(const Iterator begin, const Iterator end) noexcept
         {
             auto i = begin;
             for (const auto b : utf8ByteOrderMark)
@@ -41,26 +41,26 @@ namespace ini
         }
 
         [[nodiscard]]
-        static constexpr bool isWhiteSpace(const char c) noexcept
+        constexpr bool isWhiteSpace(const char c) noexcept
         {
             return c == ' ' || c == '\t';
         }
 
-        static std::string& leftTrim(std::string& s)
+        inline std::string& leftTrim(std::string& s)
         {
             s.erase(s.begin(), std::find_if(s.begin(), s.end(),
                                             [](char c) noexcept {return !isWhiteSpace(c);}));
             return s;
         }
 
-        static std::string& rightTrim(std::string& s)
+        inline std::string& rightTrim(std::string& s)
         {
             s.erase(std::find_if(s.rbegin(), s.rend(),
                                  [](char c) noexcept {return !isWhiteSpace(c);}).base(), s.end());
             return s;
         }
 
-        static std::string& trim(std::string& s)
+        inline std::string& trim(std::string& s)
         {
             return leftTrim(rightTrim(s));
         }
