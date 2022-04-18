@@ -97,7 +97,7 @@ namespace ini
         }
 
         [[nodiscard]] const std::string& getName() const noexcept { return name; }
-        void setName(const std::string& newName) { name = newName; }
+        void setName(const std::string_view newName) { name = newName; }
 
         [[nodiscard]] const Values& getValues() const noexcept { return values; }
 
