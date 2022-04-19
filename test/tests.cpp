@@ -105,7 +105,7 @@ TEST_CASE("Range-based for loop of sections")
 
         int counter = 0;
 
-        for (auto& i : data)
+        for (const auto& i : data)
             REQUIRE(i.first == std::to_string(counter++));
 
         REQUIRE(counter == 2);
@@ -121,7 +121,7 @@ TEST_CASE("Range-based for loop of sections")
 
         int counter = 0;
 
-        for (auto& i : constData)
+        for (const auto& i : constData)
             REQUIRE(i.first == std::to_string(counter++));
 
         REQUIRE(counter == 2);
@@ -138,7 +138,7 @@ TEST_CASE("Range-based for loop of values")
 
         int counter = 0;
 
-        for (auto& i : section)
+        for (const auto& i : section)
             REQUIRE(i.first == std::to_string(counter++));
 
         REQUIRE(counter == 2);
@@ -154,7 +154,7 @@ TEST_CASE("Range-based for loop of values")
 
         int counter = 0;
 
-        for (auto& i : constSection)
+        for (const auto& i : constSection)
             REQUIRE(i.first == std::to_string(counter++));
 
         REQUIRE(counter == 2);
